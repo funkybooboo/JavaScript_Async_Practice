@@ -1,11 +1,21 @@
 console.log("Before");
-getUser(1, (user) => {
-    console.log(`username: ${user.githubUsername}`);
-    getRepositories(user.githubUsername, (repos) => {
-        console.log(`repos: ${repos}`);
-    });
-});
+getUser(1, readUser);
 console.log("After");
+
+function readUser(user) {
+    console.log(`username: ${user.githubUsername}`);
+    getRepositories(user.githubUsername, readRepos);
+}
+
+function readRepos(repos) {
+    console.log(`repos: ${repos}`);
+    for (let repo of repos)
+        getCommits(repo, displayCommits)
+}
+
+function displayCommits(commits) {
+    console.log(commits);
+}
 
 function getUser(id, callback) {
     setTimeout(() => {
@@ -22,3 +32,12 @@ function getRepositories(username, callback) {
         callback(repos);
     }, 2000);
 }
+
+function getCommits(repo, callback) {
+    setTimeout(() => {
+        console.log("Reading a commits from a github");
+        const commits = ["commit1", "commit2", "commit3"];
+        callback(commits);
+    }, 2000);
+}
+
